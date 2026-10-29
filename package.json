@@ -1,0 +1,21 @@
+{
+  "name": "folio-news",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Folio News - a news reader with bookmarks, likes, notes and AI summaries",
+  "workspaces": ["client", "server"],
+  "scripts": {
+    "dev": "concurrently -n server,client,scraper -c blue,green,yellow \"npm run dev -w server\" \"npm run dev -w client\" \"npm run dev:scraper\"",
+    "dev:scraper": "cd scraper && python3 -m uvicorn app.main:app --port 8000 --reload",
+    "setup:scraper": "cd scraper && python3 -m pip install -r requirements.txt",
+    "build": "npm run build -w client",
+    "migrate": "npm run migrate -w server",
+    "sync": "npm run sync -w server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

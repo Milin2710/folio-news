@@ -1,0 +1,15 @@
+# Local Postgres for development: `docker compose up -d`
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: folio
+      POSTGRES_PASSWORD: folio
+      POSTGRES_DB: folio
+    ports:
+      - "5432:5432"
+    volumes:
+      - folio-data:/var/lib/postgresql/data
+
+volumes:
+  folio-data:
