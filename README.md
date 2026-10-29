@@ -17,7 +17,7 @@ A news reader built with **React** and **Node.js**. Headlines are pulled from RS
 You need **Node.js 20+**, **Python 3.10+** and **Docker** (or any Postgres database).
 
 ```bash
-# 1. Start the database
+# 1. Start the database (no Docker? see "Running without Docker" below)
 docker compose up -d
 
 # 2. Configure the server
@@ -32,6 +32,78 @@ npm run dev
 ```
 
 Open **http://localhost:5173**. On first start the server creates the tables and fetches the latest news, then refreshes it every 30 minutes.
+
+## Running without Docker
+
+Docker is only used to run Postgres. If you don't have it, use one of these instead and skip `docker compose up -d`.
+
+### Option A: Install Postgres on your machine
+
+**Windows** (PowerShell):
+
+```powershell
+winget install PostgreSQL.PostgreSQL.16
+```
+
+**macOS** (Homebrew):
+
+```bash
+brew install postgresql@16
+brew services start postgresql@16
+```
+
+**Ubuntu / Debian:**
+
+```bash
+sudo apt update && sudo apt install -y postgresql
+sudo service postgresql start
+```
+
+Then create the database. Windows and macOS installers can also do this through pgAdmin.
+
+```bash
+# macOS / Windows (psql must be on your PATH)
+createdb -U postgres folio
+
+# Ubuntu / Debian
+sudo -u postgres createdb folio
+```
+
+Finally, point the server at it in `server/.env` (use the password you chose during install):
+
+```
+DATABASE_URL=postgres://postgres:YOUR_PASSWORD@localhost:5432/folio
+DATABASE_SSL=false
+```
+
+### Option B: Free hosted Postgres
+
+Create a database on [Neon](https://neon.tech) or [Supabase](https://supabase.com), copy its connection string, and put it in `server/.env`:
+
+```
+DATABASE_URL=postgres://user:password@host/dbname
+DATABASE_SSL=true
+```
+
+### Python scraper setup
+
+The scraper needs its own packages. Either install them globally:
+
+```bash
+npm run setup:scraper
+```
+
+or use a virtual environment (recommended), then activate it **before** running `npm run dev`:
+
+```bash
+cd scraper
+python -m venv venv
+venv\Scripts\activate           # Windows. On macOS/Linux: source venv/bin/activate
+pip install -r requirements.txt
+cd ..
+```
+
+Use `python3` instead of `python` if that is the command on your machine.
 
 ## Project structure
 

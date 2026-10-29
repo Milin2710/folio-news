@@ -7,7 +7,7 @@ export default function Layout() {
   const { pathname } = useLocation();
 
   // Start each new page at the top
-  useEffect(() => window.scrollTo(0, 0), [pathname]);
+  useEffect(() => {window.scrollTo(0, 0)}, [pathname]);
 
   return (
     <>
